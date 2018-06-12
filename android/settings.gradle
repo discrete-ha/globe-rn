@@ -1,5 +1,3 @@
 rootProject.name = 'GlobeApp'
-include ':react-native-restart'
-project(':react-native-restart').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-restart/android')
 
 include ':app'

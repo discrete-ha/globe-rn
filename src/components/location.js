@@ -32,6 +32,21 @@ class location extends Component {
     super(props);
   }
 
+  componentDidMount(){
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        alert("state of lat in callback is "+position.coords.latitude);
+        this.setState({lat: position.coords.latitude, long: position.coords.longitude});
+
+      },
+
+      (error) => {alert("there was an error getting location")},
+
+      {enableHighAccuracy: true}
+
+      );
+  }
+
   render() {
     if (this.props.locationName) {
       return (

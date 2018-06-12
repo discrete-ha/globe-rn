@@ -5,7 +5,7 @@ const initialState = {};
 export default function topic(state = initialState, action = {}) {
   	switch (action.type) {
 	  	case types.SET_TOPIC:
-	  		let jsonData = JSON.parse(action.payload);
+	  		let jsonData = action.payload;
 	  		
 		  	return {
 		  		...state,

@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import {Text, Dimensions, StyleSheet, View, Alert} from 'react-native';
+import {Text, Dimensions, StyleSheet, View, Alert, Geolocation} from 'react-native';
 import topicService from '../api/topic';
 import {setTopics} from '../actions/topic';
 import {endInitLoading} from '../actions/system';
@@ -35,20 +35,27 @@ class topicApp extends Component {
   constructor(props) {
     super(props);
     let topicsPromise = topicService.getTopicsByLocation();
+    this.init = this.init.bind(this);
     topicsPromise.then(function(res){ 
       if (res.error) {
         this.showDialog();
       }else{
+        console.log("topicApp", res);
         props.setTopics(res.topics);
       }
-    }.bind(this)); 
+    }.bind(this))
+    .catch(function(error) { 
+      throw new Error("topicApp constructor failed - "+error);
+    }); 
   }
 
   init() {
+    console.log("init()");
     this.props.endInitLoading();
   }
 
   renderLogo() {
+    console.log("renderLogo()");
     return (
       <View style={styles.appWraper}>
         <Animatable.Text 
@@ -56,7 +63,7 @@ class topicApp extends Component {
         duration={1500} 
         iterationCount={2} 
         direction="alternate" 
-        onAnimationEnd={this.init.bind(this)} 
+        onAnimationEnd={this.init} 
         style={styles.logo}>GLOBE</Animatable.Text>
         <Text style={styles.logoSentence}>Realtime issues around you</Text>
       </View>
@@ -64,6 +71,7 @@ class topicApp extends Component {
   }
 
   renderLoading(){
+    console.log("renderLoading()");
     return <Loading />;
   }
 
@@ -82,10 +90,12 @@ class topicApp extends Component {
   }
 
   renderWords(){
+    console.log("renderWords()");
     return <Topics />;
   }
 
   renderTopics() {
+    console.log("renderTopics()",this.props);
     return (
       <View style={styles.appWraper}>
         <Location />
@@ -95,6 +105,7 @@ class topicApp extends Component {
   }
 
   render() {
+    console.log("render()");
     if (this.props.initLoading) {
       return this.renderLogo();
     }else{
